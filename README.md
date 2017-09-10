@@ -1,2 +1,2 @@
 # AppiumAutomation
-UIAutomation for android and IOS devicesn
+UIAutomation for android and IOS devices
