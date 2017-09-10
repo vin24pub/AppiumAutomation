@@ -3,7 +3,6 @@ package com.appium.utils;
 import com.appium.manager.DeviceManager;
 import com.infi.entities.MobilePlatform;
 import com.infi.ios.IOSDeviceConfiguration;
-import com.thoughtworks.device.SimulatorManager;
 import io.appium.java_client.remote.AndroidMobileCapabilityType;
 import io.appium.java_client.remote.AutomationName;
 import io.appium.java_client.remote.IOSMobileCapabilityType;
@@ -21,14 +20,14 @@ public class DesiredCapabilityBuilder {
 
 	private AvailablePorts availablePorts;
 	private IOSDeviceConfiguration iosDevice;
-	private SimulatorManager simulatorManager;
+	
 
 	public static ThreadLocal<DesiredCapabilities> desiredCapabilitiesThreadLocal = new ThreadLocal<>();
 
 	public DesiredCapabilityBuilder() throws IOException {
 		availablePorts = new AvailablePorts();
 		iosDevice = new IOSDeviceConfiguration();
-		simulatorManager = new SimulatorManager();
+		
 	}
 
 	public static DesiredCapabilities getDesiredCapability() {
@@ -70,22 +69,7 @@ public class DesiredCapabilityBuilder {
 				desiredCapabilities.setCapability(AndroidMobileCapabilityType.SYSTEM_PORT, availablePorts.getPort());
 			}
 			appPackage(desiredCapabilities);
-		} else if (DeviceManager.getMobilePlatform().equals(MobilePlatform.IOS)) {
-			String version = iosDevice.getIOSDeviceProductVersion();
-			appPackageBundle(desiredCapabilities);
-			// Check if simulator.json exists and add the deviceName and OS
-			if (DeviceManager.getDeviceUDID().length() == IOSDeviceConfiguration.SIM_UDID_LENGTH) {
-				desiredCapabilities.setCapability(MobileCapabilityType.DEVICE_NAME,
-						simulatorManager.getSimulatorDetailsFromUDID(DeviceManager.getDeviceUDID()).getName());
-				desiredCapabilities.setCapability(MobileCapabilityType.PLATFORM_VERSION,
-						simulatorManager.getSimulatorDetailsFromUDID(DeviceManager.getDeviceUDID()).getOsVersion());
-			}
-			if (Float.valueOf(version.substring(0, version.length() - 2)) >= 10.0) {
-				desiredCapabilities.setCapability(MobileCapabilityType.AUTOMATION_NAME, AutomationName.IOS_XCUI_TEST);
-				desiredCapabilities.setCapability(IOSMobileCapabilityType.WDA_LOCAL_PORT, availablePorts.getPort());
-			}
-			desiredCapabilities.setCapability(MobileCapabilityType.UDID, DeviceManager.getDeviceUDID());
-		}
+		} 
 		desiredCapabilities.setCapability(MobileCapabilityType.UDID, DeviceManager.getDeviceUDID());
 		desiredCapabilitiesThreadLocal.set(desiredCapabilities);
 		return desiredCapabilities;
