@@ -15,8 +15,8 @@
         "device":"./iOS.ips",
         "simulator":"./iOS.zip"
       },
-      "wdaLaunchTimeout": "80000",
-      "wdaConnectionTimeout": "80000",
+      "wdaLaunchTimeout": "8000",
+      "wdaConnectionTimeout": "8000",
       "preventWDAAttachments": true,
       "clearSystemFiles": true,
       "shouldUseSingletonTestManager": false,
